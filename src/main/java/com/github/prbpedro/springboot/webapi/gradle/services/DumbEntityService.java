@@ -35,7 +35,10 @@ public class DumbEntityService {
 	}
 
 	public Observable<?> create(Long id) {
-		return Observable.just(id)
+		return Observable.defer(
+			() -> Observable.just(id)
+		)
+		.subscribeOn(Schedulers.io())
 		.flatMap(
 			(idToSearch) -> Observable.just(Pair.of(idToSearch, repository.existsById(idToSearch)))
 		)
@@ -49,10 +52,7 @@ public class DumbEntityService {
 			}
 		)
 		.flatMap(
-			(idToInsert) -> {
-				return  Observable.just(repository.save(new DumbEntity(idToInsert)));
-			}
-		)
-		.subscribeOn(Schedulers.io());
+			(idToInsert) -> Observable.just(repository.save(new DumbEntity(idToInsert)))
+		);
 	}
 }
