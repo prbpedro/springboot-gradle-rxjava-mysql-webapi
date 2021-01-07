@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.1'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+	id 'com.avast.gradle.docker-compose' version "0.14.0"
+}
+
+group = 'com.github.prbpedro'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2' 
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	implementation "io.reactivex.rxjava3:rxjava:3.0.9"
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dockerCompose {
+
+	runAppInfrastructure {
+		useComposeFiles = ['docker-compose.yml']
+		captureContainersOutput = true
+		removeContainers = false
+	}
+
+	integrationTests {
+        useComposeFiles = ['docker-compose-integration-tests.yml']
+		removeContainers = true 
+		isRequiredBy(test)
+    }
+}
+
+test {
+	useJUnitPlatform()
+}
+
+test.doFirst {
+    dockerCompose.integrationTests.exposeAsEnvironment(test)  
+}
