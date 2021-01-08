@@ -2,8 +2,8 @@ package com.github.prbpedro.springboot.webapi.gradle.controllers;
 
 import com.github.prbpedro.springboot.webapi.gradle.entities.DumbEntity;
 import com.github.prbpedro.springboot.webapi.gradle.exceptions.ConflictException;
+import com.github.prbpedro.springboot.webapi.gradle.exceptions.UserMessageException;
 import com.github.prbpedro.springboot.webapi.gradle.services.DumbEntityService;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,9 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api
 @RestController
 @RequestMapping("dumb")
+@SuppressWarnings("unused")
 public class DumbController {
 
     private final Logger logger = LoggerFactory.getLogger(DumbController.class);
@@ -35,16 +38,14 @@ public class DumbController {
             @ApiResponse(code = 200, message = "Dumb get ok", responseContainer = "List", response = DumbEntity.class),
             @ApiResponse(code = 500, message = "Dumb get error"), })
     @GetMapping
-    public Single<?> get() {
+    public Single<ResponseEntity<List<DumbEntity>>> get() {
         return service.findAll()
         .map(
-            entities -> {
-                return ResponseEntity.ok(entities);
-            }
-        ).onErrorReturn(
+            ResponseEntity::ok
+        ).onErrorResumeNext(
             throwable -> {
                 logger.error(throwable.getMessage(), throwable);
-                return (ResponseEntity) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dumb get error");
+                return Single.error(new UserMessageException("Dumb get error"));
             }
         );
     }
@@ -52,23 +53,35 @@ public class DumbController {
     @ApiOperation(value = "Dumb post")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Dumb post ok", response = DumbEntity.class),
-        @ApiResponse(code = 409, message = "Dumb post already exists"),
+        @ApiResponse(code = 409, message = "Entity already exists"),
         @ApiResponse(code = 500, message = "Dumb post error"), })
     @PostMapping
-    public Observable<? extends ResponseEntity<?>> post(
+    public Single<ResponseEntity<DumbEntity>> post(
         @RequestBody
         Long id
-        ) {
+    ) {
         return service.create(id)
         .map(
-            entities -> {
-                return ResponseEntity.ok(entities);
+            ResponseEntity::ok
+        ).onErrorResumeNext(
+            throwable -> {
+                if(!(throwable instanceof ConflictException)){
+                    logger.error(throwable.getMessage(), throwable);
+                    return Single.error(new UserMessageException("Dumb post error"));
+                }else{
+                    return Single.error(throwable);
+                }
             }
         );
     }
 
+    @ExceptionHandler({ UserMessageException.class })
+    public ResponseEntity<String> handleException(UserMessageException ex) {
+        return new ResponseEntity<>(ex.getUserMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler({ ConflictException.class })
-    public ResponseEntity<?> handleException(ConflictException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<String> handleException(ConflictException ex) {
+        return new ResponseEntity<>(ex.getUserMessage(), HttpStatus.CONFLICT);
     }
 }

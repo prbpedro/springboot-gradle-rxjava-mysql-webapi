@@ -1,8 +1,9 @@
 package com.github.prbpedro.springboot.webapi.gradle.exceptions;
 
-public class ConflictException extends RuntimeException{
+public class ConflictException extends UserMessageException{
 
     public ConflictException(Object conflicted) {
+        super("Entity already exists");
         this.conflicted = conflicted;
     }
 
