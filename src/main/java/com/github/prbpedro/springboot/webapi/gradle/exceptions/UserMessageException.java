@@ -2,7 +2,7 @@ package com.github.prbpedro.springboot.webapi.gradle.exceptions;
 
 public class UserMessageException extends RuntimeException{
 
-    private String userMessage;
+    private final String userMessage;
 
     public UserMessageException(String userMessage) {
         this.userMessage = userMessage;
@@ -10,9 +10,5 @@ public class UserMessageException extends RuntimeException{
 
     public String getUserMessage() {
         return userMessage;
-    }
-
-    public void setUserMessage(String userMessage) {
-        this.userMessage = userMessage;
     }
 }
