@@ -1,6 +1,6 @@
 # springboot-gradle-rxjava-mysql-webapi
 
-Este projeto tem como objetivo demonstrar o uso das tecnologias SpringBoot, RxJava3, Gradle, Docker, docker-compose, MySql, Swagger, Gradle, Groovy e gradle-docker-compose-plugin para a construção de webapis não blocantes (reativas), conteinerizadas e com as infraestruturas necessárias para execução e testes também conteinerizadas.
+Este projeto tem como objetivo demonstrar o uso das tecnologias SpringBoot, RxJava3, Docker, docker-compose, MySql, Swagger, Gradle, Groovy e gradle-docker-compose-plugin para a construção de webapis não blocantes (reativas), conteinerizadas e com as infraestruturas necessárias para execução e testes também conteinerizadas.
 
 ## Infraestrutura
 A web-api foi construída utilizando o framework SpringBoot na versão 2.4.1 e referencia uma base de dados MySql que é configurada através do Docker, docker-compose e do plugin Gradle gradle-docker-compose-plugin configurados pelos arquivos docker-compose.yml, docker-compose-integration-tests.yml, Dockerfile e build.gradle.
