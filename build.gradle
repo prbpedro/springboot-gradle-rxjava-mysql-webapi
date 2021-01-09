@@ -41,6 +41,11 @@ dockerCompose {
     }
 }
 
+bootRun {
+	environment = ["SPRINGBOOT_WEBAPI_GRADLE_MYSQL_SERVICE_HOST": "localhost",
+				   "SPRINGBOOT_WEBAPI_GRADLE_MYSQL_SERVICE_TCP_3306": "3306" ]
+}
+
 test {
 	useJUnitPlatform()
 }
