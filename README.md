@@ -1,6 +1,6 @@
 # springboot-gradle-rxjava-mysql-webapi
 
-Este projeto tem como objetivo demonstrar o uso das tecnologias SpringBoot, RxJava3, Docker, docker-compose, MySql, Swagger, Gradle, Groovy e gradle-docker-compose-plugin para a construção de webapis não blocantes (reativas), conteinerizadas e com as infraestruturas necessárias para execução e testes também conteinerizadas.
+Este projeto tem como objetivo demonstrar o uso das tecnologias SpringBoot, RxJava3, Docker, docker-compose, Terraform, MySql, Swagger, Gradle, Groovy e gradle-docker-compose-plugin para a construção de webapis não blocantes (reativas), conteinerizadas e com as infraestruturas necessárias para execução e testes também conteinerizadas.
 
 ## Infraestrutura
 A web-api foi construída utilizando o framework SpringBoot na versão 2.4.1 e referencia uma base de dados MySql que é configurada através do Docker, docker-compose e do plugin Gradle gradle-docker-compose-plugin configurados pelos arquivos docker-compose.yml, docker-compose-integration-tests.yml, Dockerfile e build.gradle.
@@ -9,6 +9,9 @@ Para manter os componentes do docker necessários para a web-api utilize as segu
 * runAppInfrastructureComposeBuild: cria as imagens necessárias a web-api de acordo com o arquivo docker-compose.yml.
 * runAppInfrastructureComposeUp: inicia a execução das imagens configuradas através da task runAppInfrastructureComposeBuild.
 * runAppInfrastructureComposeDown: para a execução das imagens iniciadas através da task runAppInfrastructureComposeUp.
+
+Alternativamente pode-se utilizar o terraform, configurado através do arquivo terraform/main.tf, para manter os componentes docker através dos comandos abaixo executados com o usuário na pasta terraform:
+* terraform init/plan/apply/destroy
 
 ### Base de dados
 A base de dados contém um schema dumb_db, que contém uma tabela dumb_entity, que contém somente um campo (chave primária) long.
