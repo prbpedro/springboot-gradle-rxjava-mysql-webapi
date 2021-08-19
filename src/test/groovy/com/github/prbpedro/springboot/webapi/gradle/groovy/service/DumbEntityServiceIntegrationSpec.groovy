@@ -4,8 +4,6 @@ import com.github.prbpedro.springboot.webapi.gradle.groovy.SpringBootWebapiGradl
 import com.github.prbpedro.springboot.webapi.gradle.groovy.entities.DumbEntity
 import com.github.prbpedro.springboot.webapi.gradle.groovy.repositories.DumbEntityRepository
 import com.github.prbpedro.springboot.webapi.gradle.groovy.services.DumbEntityService
-import io.reactivex.rxjava3.subscribers.TestSubscriber
-import org.reactivestreams.Subscriber
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
