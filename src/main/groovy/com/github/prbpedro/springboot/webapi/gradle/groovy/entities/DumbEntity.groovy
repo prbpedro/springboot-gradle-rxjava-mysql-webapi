@@ -10,7 +10,6 @@ import javax.persistence.Transient
 class DumbEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
     @Transient
