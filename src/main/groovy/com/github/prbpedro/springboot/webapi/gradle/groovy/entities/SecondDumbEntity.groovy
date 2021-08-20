@@ -5,7 +5,7 @@ import javax.persistence.Id
 import javax.persistence.Transient
 
 @Entity
-class DumbEntity {
+class SecondDumbEntity {
 
     @Id
     Long id

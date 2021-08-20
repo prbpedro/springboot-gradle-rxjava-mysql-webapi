@@ -3,7 +3,7 @@ package com.github.prbpedro.springboot.webapi.gradle.groovy.controllers
 import com.github.prbpedro.springboot.webapi.gradle.groovy.entities.DumbEntity
 import com.github.prbpedro.springboot.webapi.gradle.groovy.exceptions.ConflictException
 import com.github.prbpedro.springboot.webapi.gradle.groovy.exceptions.UserMessageException
-import com.github.prbpedro.springboot.webapi.gradle.groovy.services.DumbEntityService
+import com.github.prbpedro.springboot.webapi.gradle.groovy.services.DumbService
 import io.reactivex.rxjava3.core.Single
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -25,9 +25,9 @@ class DumbController {
     private final Logger logger = LoggerFactory.getLogger(DumbController.class)
 
     @Autowired
-    private final DumbEntityService service
+    private final DumbService service
 
-    DumbController(DumbEntityService service) {
+    DumbController(DumbService service) {
         this.service = service
     }
 
@@ -58,7 +58,7 @@ class DumbController {
             @RequestBody
                     Long id
     ) {
-        return service.create(id)
+        return service.createDumbEntity(id)
                 .map(
                         ResponseEntity.&ok
                 ).onErrorResumeNext(
