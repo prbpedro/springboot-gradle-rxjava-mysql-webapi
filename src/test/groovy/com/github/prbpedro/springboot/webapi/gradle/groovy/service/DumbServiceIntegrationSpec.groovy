@@ -54,14 +54,6 @@ class DumbServiceIntegrationSpec extends Specification {
             throw it
         })
 
-        Throwable asd = null
-        Optional<SecondDumbEntity> a123 = null
-        service.getSecondDumbEntity(2).blockingSubscribe({ r ->
-            a123 = r
-        }, {
-            asd = it
-        })
-
         Throwable t = null
         DumbEntity d2 = null
         service.create(1).blockingSubscribe({ r ->
@@ -79,24 +71,20 @@ class DumbServiceIntegrationSpec extends Specification {
         })
 
         Throwable t3 = null
-        DumbEntity d3 = null
-        service.getDumbEntity(1).blockingSubscribe({ r ->
-            d3 = r
+        Optional<DumbEntity> dd = null
+        service.getDumbEntity(2).blockingSubscribe({ r ->
+            dd = r
         }, {
             t3 = it
-        })
-
-        Throwable t4 = null
-        def result = null
-        service.findAll().blockingSubscribe({ r ->
-            result = r
-        }, {
-            t4 = it
         })
 
         then:
         d
         d.id == 1
         !sd.isPresent()
+        !dd.isPresent()
+        t
+        !t2
+        !t3
     }
 }

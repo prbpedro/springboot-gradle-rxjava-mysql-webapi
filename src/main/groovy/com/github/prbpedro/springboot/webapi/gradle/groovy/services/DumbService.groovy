@@ -42,8 +42,13 @@ class DumbService {
                 .subscribeOn(Schedulers.io())
     }
 
-    Single<DumbEntity> getDumbEntity(Long id) {
-        return Single.just(repository.getOne(id))
+    Observable<Optional<DumbEntity>> getDumbEntity(Long id) {
+        return Observable.defer({ -> Observable.just(repository.findById(id)) })
+                .flatMap(
+                        { entity ->
+                            return Observable.just(entity)
+                        }
+                )
                 .subscribeOn(Schedulers.io())
     }
 
