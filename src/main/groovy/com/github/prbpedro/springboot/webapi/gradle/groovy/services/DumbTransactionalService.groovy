@@ -23,7 +23,7 @@ class DumbTransactionalService {
     SecondDumbEntityRepository secondRepository
 
     @Transactional
-    public DumbEntity transactionalCreate(long id) {
+    DumbEntity transactionalCreate(long id) {
         secondRepository.save(new SecondDumbEntity(id: id + 1))
         throw new Exception()
     }
